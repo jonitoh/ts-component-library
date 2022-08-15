@@ -6,3 +6,4 @@ export * from "./use-id";
 export { default as useDynamicContainer } from "./use-dynamic-container";
 export type { Options as UseDynamicContainerOptions } from "./use-dynamic-container";
 export * from "./use-event-listener";
+export * from "./use-value-changed";

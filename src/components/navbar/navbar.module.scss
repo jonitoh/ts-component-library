@@ -1,0 +1,253 @@
+@import 'styles/base/media-queries';
+@import 'styles/layout/utilities';
+
+/* by default, it is suited for desktop aka 1024px */
+/* sass variables */
+
+.navigation.full-width {
+    @include container('full', var(--th-color-border));
+}
+
+/* cf. https://css-tricks.com/creating-a-smart-navbar-with-vanilla-javascript/ */
+.navigation.sticky {
+    position: sticky;
+    top: 0;
+}
+
+.navigation.scroll-up,
+.navigation:focus-within {
+    top: 0;
+}
+
+.navigation.scroll-down {
+    top: -100%;
+}
+
+.navigation {
+    @include container('default', var(--th-color-border));
+    padding: var(--space-minus-1);
+    width: -webkit-fill-available;
+
+    transition: top 500ms ease-in-out;
+
+    @include glass-effect-from-semantic-color("--th-color-primary", "simple");
+
+    &__wrapper {
+        position: relative;
+
+        padding: 0 calc(2*var(--space-0));
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__link {
+
+        &,
+        &:visited {
+            position: relative;
+            color: #{semantic-color("--th-color-text")} !important;
+            text-decoration: none;
+            /*font-weight: bolder;*/
+            text-transform: uppercase;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, semantic-color('--th-color-primary', 'darkest'), semantic-color('--th-color-primary', 'lightest'));
+            z-index: 1;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.5s ease-in-out;
+
+        }
+
+        &:hover::before,
+        &:focus::before,
+        &:active::before,
+        &.active::before {
+            transform: scaleX(1);
+        }
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.active {
+            color: #{semantic-color("--th-color-primary")} !important;
+            background-color: inherit !important;
+            font-weight: inherit !important;
+
+            text-decoration: none;
+        }
+
+        &.force-active {
+            color: #{semantic-color("--th-color-secondary")} !important;
+            border-width: 2px;
+            border-style: solid;
+            border-color: linear-gradient(to right, semantic-color('--th-color-secondary', 'darkest'), semantic-color('--th-color-secondary', 'lightest'));
+            padding: 2px;
+
+            &:hover::before {
+                transform: scaleX(0);
+            }
+        }
+    }
+
+    &__menu {
+        list-style: none;
+
+        margin: 0;
+        margin-left: auto;
+        padding: 0;
+
+        display: inline-flex;
+        align-items: center;
+
+        &__toggle {
+            display: none;
+
+            position: absolute;
+            right: 30px;
+            top: var(--space-minus-1);
+        }
+
+        &__item {
+            padding: 0 var(--space-0);
+            display: inline-block;
+
+            &:hover .navigation__menu__dropdown,
+            &:hover .navigation__menu__box {
+                /*cursor: pointer;*/
+
+                top: calc(2 * var(--space-minus-1));
+
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        &__dropdown {
+            list-style: none;
+            border: 1px solid black;
+            /* box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); */
+
+            padding: var(--space-minus-1);
+            margin: 0;
+            width: max-content;
+
+            position: absolute;
+            top: 0;
+
+            opacity: 0;
+            visibility: hidden;
+
+            &__item {
+                padding: var(--space-minus-1);
+            }
+        }
+
+        &__box {
+            border: 1px solid black;
+            /* box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); */
+
+            width: 100%;
+            min-height: 30%;
+            padding: var(--space-minus-1);
+            margin: 0;
+
+            position: absolute;
+            left: 0;
+
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+
+    &__other {
+        display: inline-flex;
+        gap: var(--space-minus-1);
+    }
+
+    &__search {
+
+        &__form {
+            transition: top 500ms ease-in-out;
+
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -1000%;
+
+            &.show-search-bar {
+                top: calc(2*var(--space-plus-1));
+            }
+        }
+
+        &__input {
+            width: 100%;
+        }
+    }
+}
+
+
+@include onTablet {
+    .navigation {
+
+        &__wrapper {
+            padding: 0;
+        }
+
+        &__menu {
+            transition: top 0.3s ease;
+
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            position: fixed;
+            top: -1000%;
+            left: 0;
+
+            width: 100%;
+            padding: var(--space-plus-1);
+
+            overflow-y: auto;
+
+            @include glass-effect-from-semantic-color("--th-color-primary", "complex");
+
+            &.show-menu {
+                top: calc(2*var(--space-plus-1));
+            }
+
+            &__item {
+                padding: var(--space-plus-1);
+                font-size: var(--font-size-plus-1);
+
+                &:hover .navigation__menu__dropdown,
+                &:hover .navigation__menu__box {
+                    max-height: 100%;
+                }
+            }
+
+            &__dropdown,
+            &__box {
+                border: none;
+                box-shadow: none;
+
+                position: static;
+
+                overflow: hidden;
+            }
+
+            &__toggle {
+                display: block;
+            }
+        }
+    }
+}

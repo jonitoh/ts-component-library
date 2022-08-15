@@ -1,0 +1,272 @@
+@import 'styles/base/media-queries';
+@import 'styles/layout/utilities';
+
+/* structure:
+    .button
+        .icon
+        .label
+*/
+
+/* by default, it is suited for desktop aka 1024px */
+/* sass variables */
+$gap-icon-label: .25em;
+
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1em;
+    height: 1em;
+}
+
+.label {}
+
+.button {
+    /* default */
+    --button-color: #{semantic-color("--th-color-white")};
+    --button-color-hover: #{semantic-color("--th-color-white")};
+    --button-background-color: #{semantic-color("--th-color-highlight")};
+    --button-background-color-hover: #{semantic-color("--th-color-highlight", "darker")};
+
+    appearance: none;
+    cursor: pointer;
+
+    border: none;
+
+    padding: .5em 1em;
+    min-width: 4em;
+
+    display: inline-flex;
+    gap: .25em;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--button-color);
+    background: var(--button-background-color);
+
+    transition: background-color 0.3s ease-out, color 0.3s ease-out;
+
+    /* a and button are alike */
+    text-decoration: none;
+    text-align: center;
+    // white-space: normal;
+    font-family: var(--th-font-action);
+
+    &:hover {
+        background: var(--button-background-color-hover);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    &:focus {
+        outline: none;
+        @include main-shadow($key: 'all', $color: semantic-color("--th-color-shadow"), $w: 4px);
+    }
+
+    &:disabled {
+        background: semantic-color("--th-color-disabled");
+        cursor: not-allowed;
+    }
+
+    /* position of the icon if there is one */
+    &__main-item-position {
+        &--left {
+            flex-direction: row;
+        }
+
+        &--right {
+            flex-direction: row-reverse;
+        }
+
+        &--top {
+            flex-direction: column;
+        }
+
+        &--bottom {
+            flex-direction: column-reverse;
+        }
+    }
+
+    /* if only icon, put sr-only on children */
+    &--only-icon {
+        min-width: initial;
+
+        .label {
+            @include screen-reader-only;
+        }
+    }
+
+    /* variant */
+    &__variant {
+        &--primary {
+            --button-background-color: #{semantic-color("--th-color-primary")};
+            --button-background-color-hover: #{semantic-color("--th-color-primary", "darker")};
+        }
+
+        &--secondary {
+            --button-background-color: #{semantic-color("--th-color-secondary")};
+            --button-background-color-hover: #{semantic-color("--th-color-secondary","darker")};
+        }
+
+        &--apparent {
+            --button-color: #{semantic-color("--th-color-text")};
+            --button-color-hover: #{semantic-color("--th-color-primary")};
+            --button-background-color: #{semantic-color("--th-color-primary", 'lighter', ('l': 20%))};
+            --button-background-color-hover: #{semantic-color("--th-color-primary", 'lighter', ('l': 30%))};
+
+            &:focus {
+                box-shadow: none;
+                outline: get-border-variables('size', 'default') solid var(--button-color-hover); //highlight
+            }
+
+            .icon:hover {
+                color: var(--button-color-hover);
+            }
+        }
+
+        &--outline-based {
+            background: transparent;
+            color: #{semantic-color("--th-color-primary")};
+            border: get-border-variables('size', 'default') solid semantic-color("--th-color-primary");
+
+            &:hover {
+                border-color: none;
+                background: var(--button-background-color);
+                color: var(--button-color);
+            }
+        }
+
+        &--outline-on-hover {
+            border: get-border-variables('size', 'default') solid transparent;
+
+            &:hover {
+                background: transparent;
+                color: #{semantic-color("--th-color-primary")};
+                border-color: #{semantic-color("--th-color-primary")};
+            }
+        }
+    }
+
+    /* size */
+    &__size {
+        &--small {
+            font-size: var(--font-size-minus-1);
+        }
+
+        &--default {
+            font-size: var(--font-size-0);
+        }
+
+        &--medium {
+            font-size: var(--font-size-plus-1);
+        }
+
+        &--large {
+            font-size: var(--font-size-plus-2);
+        }
+    }
+
+    /* border */
+    &__border {
+        &--square {
+            border-radius: 0px;
+        }
+
+        &--round {
+            border-radius: get-border-variables('radius', 'xl');
+        }
+
+        &--pill {
+            border-radius: get-border-variables('radius', 'pill');
+        }
+
+        &--circle {
+            border-radius: get-border-variables('radius', 'round');
+            width: 2em;
+            height: 2em;
+            padding: 0;
+        }
+    }
+
+    /* animation */
+    &__animation {
+        &--none {}
+
+        &--ripple {
+            background-position: center;
+            transition: background 0.8s;
+
+            &:hover {
+                background: var(--button-background-color-hover) radial-gradient(circle, transparent 1%, var(--button-background-color-hover) 1%) center/15000%;
+            }
+
+            &:active {
+                background-color: var(--button-background-color);
+                background-size: 100%;
+                transition: background 0s;
+            }
+
+        }
+
+        &--drop {
+            /* From uiverse.io by @alexmaracinaru */
+            --button-color: #{semantic-color("--th-color-text")};
+            --button-background-color: #{semantic-color("--th-color-primary")};
+
+            position: relative;
+            margin: auto;
+            background: none;
+
+            &:before {
+                $size: 1.8em;
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                border-radius: calc(10/ 9 * $size);
+                background: var(--button-background-color);
+                width: $size;
+                height: $size;
+                transition: width 0.3s ease;
+            }
+
+            span {
+                position: relative;
+                color: var(--button-color);
+            }
+
+            .icon {
+                position: relative;
+                top: 0;
+            }
+
+            &:last-child {
+                transform: translateX(-5px);
+                transition: translateX 0.3s ease;
+            }
+
+            &:hover {
+
+                background: none;
+                box-shadow: none;
+
+                &:before {
+                    width: 100%;
+                }
+
+                &:last-child {
+                    transform: translateX(0);
+                }
+            }
+        }
+    }
+
+
+
+
+    /*
+    animation?: 'none' | 'ripple' | 'drop';*/
+}
