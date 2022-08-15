@@ -1,0 +1,60 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains everything related to FLUID SIZES.
+// -----------------------------------------------------------------------------
+@import '../abstract';
+
+/// --- SPACING
+
+///
+/// Creates a list of global fluid spaces from the smallest to the biggest
+/// based on utopia
+/// @link https://utopia.fyi/space/calculator?c=240,14,1.2,1440,24,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l
+/// @example scss - Creates a single list of fluid spaces
+///  $spaces: (12px);
+///
+$spaces: (
+    clamp(0.25rem, calc(0.23rem + 0.17vw), 0.38rem),
+    clamp(0.44rem, calc(0.38rem + 0.42vw), 0.75rem),
+    clamp(0.69rem, calc(0.60rem + 0.58vw), 1.13rem),
+    clamp(0.88rem, calc(0.75rem + 0.83vw), 1.50rem),
+    clamp(1.31rem, calc(1.13rem + 1.25vw), 2.25rem),
+    clamp(1.75rem, calc(1.50rem + 1.67vw), 3.00rem),
+    clamp(2.63rem, calc(2.25rem + 2.50vw), 4.50rem),
+    clamp(3.50rem, calc(3.00rem + 3.33vw), 6.00rem),
+    clamp(5.25rem, calc(4.50rem + 5.00vw), 9.00rem)) !default;
+
+///
+/// Index for our default space for the body 
+/// based on utopia
+/// @example scss - Creates a single index
+///  $default-fluid-space-index: 4;
+///
+$default-fluid-space-index: 4 !default;
+
+///
+/// Relative map of indexes
+///
+/// @example scss - Creates a single map with the label `default`
+///  $fluid-space-start-indexes: ('default': 0);
+///
+$fluid-space-start-indexes: (
+    "xs": -2,
+    "s": -1,
+    "default": 0,
+    "l": 1,
+    "xl": 2,
+    "2xl": 3,
+    ) !default;
+
+@mixin spread-fluid-space-by-index($key, $max: 3) {
+    $relative-index: map-get-safely($fluid-space-start-indexes, $key, 'error', 'is not a valid key in the map $space-start-indexes'
+);
+
+@for $i from 1 through $max {
+    --space-plus-#{$i}: #{boundedNth($spaces, $default-fluid-space-index + $relative-index + $i)};
+    --space-minus-#{$i}: #{boundedNth($spaces, $default-fluid-space-index + $relative-index - $i)};
+}
+
+--space-0: #{boundedNth($spaces, $default-fluid-space-index + $relative-index)};
+}

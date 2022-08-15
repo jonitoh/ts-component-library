@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+// -----------------------------------------------------------------------------
+// This file contains CSS for HTML BASIC Tags.
+// -----------------------------------------------------------------------------
+@import '../base';
+
+/* HTML */
+html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    // background-color: var(--th-color-background-main);
+    // color: var(--th-color-text-main);
+    // Changes the default tap highlight to be completely transparent in iOS.
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* BODY */
+$gradient-little: get-gradient-linear(semantic-color("--th-color-black"), semantic-color("--th-color-white"));
+$gradient-transparent: get-gradient-transparent(semantic-color("--th-color-white"));
+
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+
+    background-color: semantic-color("--th-color-background");
+    color: semantic-color("--th-color-text");
+
+    overflow-x: hidden;
+    transition: color 0.15s; //, background-color 0.15s;
+
+    font-family: var(--th-font-text);
+    font-weight: normal;
+    font-size: var(--font-size-0);
+    line-height: get-font-variables('line-height', 'default');
+
+
+    &.with-color:before,
+    &.with-gradient:before,
+    &.with-image:before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: -1;
+    }
+
+    &.with-image:before {
+        background-image: url('../../assets/bg.jpeg');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        // add effect zoom when scrolling ?
+    }
+
+    &.with-gradient:before {
+        background: $gradient-transparent;
+    }
+
+    &.with-color:before {
+        background: white; // semantic-color("--th-color-background");
+    }
+}
+
+/* HEADINGS */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--th-font-headings);
+    letter-spacing: 1px;
+    line-height: get-font-variables('line-height', 's');
+    // font-weight: normal;
+}
+
+h1 {
+    text-transform: uppercase;
+    text-rendering: optimizeLegibility;
+    font-size: var(--font-size-plus-3);
+    font-weight: 500;
+}
+
+h2 {
+    text-transform: capitalize;
+    text-rendering: optimizeLegibility;
+    font-size: var(--font-size-plus-2);
+    font-weight: 500;
+}
+
+h3 {
+    text-transform: lowercase;
+    text-rendering: optimizeLegibility;
+    font-size: var(--font-size-plus-1);
+    font-weight: 500;
+}
+
+h4 {
+    font-size: var(--font-size-minus-1);
+}
+
+h5,
+h6 {
+    font-size: var(--font-size-minus-2);
+}
+
+/* PARAGRAPH */
+p {
+    font-family: var(--th-font-text);
+    margin: 0;
+}

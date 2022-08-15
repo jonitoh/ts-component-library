@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+// -----------------------------------------------------------------------------
+// This file contains everything related to TYPOGRAPHY.
+// -----------------------------------------------------------------------------
+@import '../abstract';
+
+/// --- FONT SIZE
+
+///
+/// Creates a list of global fluid font size from the smallest to the biggest
+/// based on utopia
+/// @link https://utopia.fyi/type/calculator?c=240,14,1.2,1440,24,1.333,6,6,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l
+/// @example scss - Creates a single list of fluid font sizes
+///  $font-sizes: (12px);
+///
+$font-sizes: (
+  clamp(0.27rem, calc(0.30rem + -0.03vw), 0.29rem),
+  clamp(0.35rem, calc(0.35rem + 0.01vw), 0.36rem),
+  clamp(0.42rem, calc(0.41rem + 0.07vw), 0.48rem),
+  clamp(0.51rem, calc(0.48rem + 0.17vw), 0.63rem),
+  clamp(0.61rem, calc(0.56rem + 0.32vw), 0.84rem),
+  clamp(0.73rem, calc(0.65rem + 0.53vw), 1.13rem),
+  clamp(0.88rem, calc(0.75rem + 0.83vw), 1.50rem),
+  // idx == 7
+  clamp(1.05rem, calc(0.86rem + 1.27vw), 2.00rem),
+  clamp(1.26rem, calc(0.98rem + 1.87vw), 2.67rem),
+  clamp(1.51rem, calc(1.10rem + 2.72vw), 3.55rem),
+  clamp(1.81rem, calc(1.23rem + 3.90vw), 4.74rem),
+  clamp(2.18rem, calc(1.35rem + 5.51vw), 6.31rem),
+  clamp(2.61rem, calc(1.45rem + 7.74vw), 8.42rem),
+  ) !default;
+
+///
+/// Index for our default size for the body 
+/// based on utopia
+/// @example scss - Creates a single index
+///  $default-font-size-index: 7;
+///
+$default-font-size-index: 7 !default;
+
+///
+/// Relative map of indexes
+///
+/// @example scss - Creates a single map with the label `default`
+///  $font-size-start-indexes: ('default': 0);
+///
+$font-size-start-indexes: (
+  's': -1,
+  'default': 0,
+  'l': 1,
+  'xl': 2,
+  '2xl': 3,
+  ) !default;
+
+@mixin spread-font-size-by-index($key, $max: 3) {
+  $relative-index: map-get-safely($font-size-start-indexes, $key, 'error', 'is not a valid key in the map $font-size-start-indexes'
+);
+
+@for $i from 1 through $max {
+  --font-size-plus-#{$i}: #{boundedNth($font-sizes, $default-font-size-index + $relative-index + $i)};
+  --font-size-minus-#{$i}: #{boundedNth($font-sizes, $default-font-size-index + $relative-index - $i)};
+}
+
+--font-size-0: #{boundedNth($font-sizes, $default-font-size-index + $relative-index)};
+}
+
+/// --- WEIGHT
+
+///
+/// Creates a list of font weights from the smallest to the biggest
+/// @example scss - Creates a single list of font weights
+///  $font-weights: ('default': 100);
+///
+$font-weights: (
+  'default': 100,
+  's': 200,
+  'l': 400,
+  'xl': 600,
+  '2xl': 800,
+  ) !default;
+/*
+@mixin spread-font-weight {
+  @include generate-css-variables('font-weight', 'do-nothing', $font-weights, 'do-nothing'
+);
+}
+*/
+/// --- LETTER SPACING
+
+///
+/// Creates a list of letter spacings from the smallest to the biggest
+/// @example scss - Creates a single list of letter spacings
+///  $font-letter-spacings: ('default': .025em);
+///
+$font-letter-spacings: (
+  'default': .025em,
+  's': .050em,
+  'l': .100em,
+  'xl': .150em,
+  '2xl': .750em,
+  ) !default;
+/*
+@mixin spread-font-letterspacing {
+  @include generate-css-variables('font-letter-spacing', 'do-nothing', $font-letter-spacings, 'do-nothing'
+);
+}
+*/
+/// --- LINE HEIGHT
+
+///
+/// Creates a list of font line heights from the smallest to the biggest
+/// @example scss - Creates a single list of font line heights
+///  $font-line-heights: ('default': 100);
+///
+$font-line-heights: (
+  'default': 1,
+  's': 1.25,
+  'l': 1.375,
+  'xl': 1.5,
+  '2xl': 2,
+  ) !default;
+/*
+@mixin spread-font-lineheight {
+  @include generate-css-variables('font-lineheight', 'do-nothing', $font-line-heights, 'do-nothing'
+);
+}
+*/
+
+@function get-font-variables($map-name, $key) {
+  @if ($map-name=='font-weight') {
+    @return map-get-safely($font-weights, $key, 'error', 'is not a valid key in the map $font-weights.'
+  );
+}
+
+@else if ($map-name=='letter-spacing') {
+  @return map-get-safely($font-letter-spacings, $key, 'error', 'is not a valid key in the map $font-letter-spacings.');
+}
+
+@else if ($map-name=='line-height') {
+  @return map-get-safely($font-line-heights, $key, 'error', 'is not a valid key in the map $font-line-heights.');
+}
+
+@else {
+  @error 'get-font-variables::#{$map-name} is not a valid map.';
+}
+}
+
+
+
+/*
+@mixin spread-typography-variables {
+  @include spread-font-weight;
+  @include spread-font-letterspacing;
+  @include spread-font-lineheight;
+}
+*/

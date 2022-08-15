@@ -1,6 +1,4 @@
 import React from "react";
-import "./button.css";
-import "./button.module.css";
 import "./button.scss";
 import "./button.module.scss";
 

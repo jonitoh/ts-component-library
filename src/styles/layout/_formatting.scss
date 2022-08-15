@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+// -----------------------------------------------------------------------------
+// This file contains CSS for HTML FORMATTING Tags.
+// -----------------------------------------------------------------------------
+
+/* BLOCKQUOTE */
+blockquote {
+    font-style: italic;
+    font-size: var(--font-size-plus-2);
+    font-family: var(--th-font-action);
+    quotes: '“''”''‘''’';
+
+    /*
+    >p {
+        text-indent: -0.6ch;
+
+        &::before {
+            content: open-quote;
+        }
+
+        &::after {
+            content: close-quote;
+        }
+    }
+    
+    footer {
+        margin-top: var(--space-minus-1);
+        font-family: var(--th-font-headings);
+        font-style: normal;
+        font-size: var(--font-size-0);
+    }*/
+
+    cite {
+        margin-top: var(--space-minus-1);
+        display: block;
+        font-style: normal;
+        text-align: right;
+    }
+}
+
+/* SMALL */
+small {
+    font-family: var(--th-font-text);
+    font-size: var(--font-size-minus-3);
+}
+
+/* STRONG */
+strong {
+    font-weight: 700;
+}
+
+/* MARK */
+mark {
+    background: #{semantic-color("--th-color-secondary", "lighter")};
+    padding: 0 var(--space-minus-3);
+}
+
+/* PRE */

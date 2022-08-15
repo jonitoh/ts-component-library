@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "rootDir": "src",
     "outDir": "lib",
     "lib": ["dom", "dom.iterable", "esnext"],
     "declaration": true,
@@ -16,8 +17,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "#/*": ["./src/*"]
+    }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "lib", "**/*.stories.**"]
+  "exclude": ["node_modules", "lib", "**/*.stories.**", "scripts", ".storybook"]
 }

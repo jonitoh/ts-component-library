@@ -1,0 +1,152 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains everything related to Z-INDEXES.
+// -----------------------------------------------------------------------------
+@import '../abstract';
+
+/// --- Z-INDEXES
+
+///
+/// Creates a list of global z-indexes
+///
+/// @example scss - Creates a single z-index with the label `default`
+///  $z-indexes: ('default': 1);
+///
+$z-indexes: (
+  'default': 1,
+  'lowest': -1000,
+  'footer': 100,
+  'header': 100,
+  'overlay': 200,
+  'notification': 300,
+  'modal': 400,
+  'alert': 500,
+  'highest': 1000,
+  ) !default;
+
+///
+/// Creates a z-index threshold to use for adding around known z-indexes
+///
+/// @example scss - Creates a single z-index with the label `default`
+///  $threshold: 100;
+///
+$threshold: 100 !default;
+
+///
+/// Check if we can apply the value.
+///
+/// @param {String}   $key  - z-index name
+///
+/// @return {Boolean} - A numeric value
+///
+@function is-valid-z-index-threshold($value) {
+
+  @return $value <=$threshold;
+}
+
+///
+/// Retrieve a z-index.
+///
+/// @param {String}   $key  - z-index name
+///
+/// @return {Number} - A numeric value
+///
+@function get-z-index($key) {
+  @return map-get-safely($z-indexes, $key, 'error', 'is not a valid z-index key'
+);
+}
+
+///
+/// Create a new z-index based on the known ones.
+///
+/// @param {List}   $params  - list ($key, $value, $type)
+///
+/// @return {Number} - A numeric value
+///
+@function add-z-index($params) {
+  $key: 'default';
+  $value: 1;
+  $type: '*';
+
+  @if type-of($params)=='list' {
+    @if length($params)==3 {
+      $key: nth($params, 1);
+      $value: nth($params, 2);
+      $type: nth($params, 3);
+    }
+
+    @else if length($params)==2 {
+      $key: nth($params, 1);
+      $value: nth($params, 2);
+    }
+
+    @else {
+      $key: nth($params, 1);
+    }
+
+  }
+
+  @else if type-of($params)=='string' {
+    // one param
+    $key: $params;
+
+  }
+
+  @else {
+    @error 'add-z-index::wrong parameters.';
+  }
+
+  @if not is-valid-z-index-threshold($value) {
+    @error 'add-z-index::value is too high';
+  }
+
+  @if $type=='inc' {
+    @return get-z-index($key)+$value;
+  }
+
+  // is-valid-value($value)
+
+  @else if $type=='dec' {
+    @return get-z-index($key) - $value;
+  }
+
+  @else {
+    @error 'add-z-index::#{$type} is not a valid type.';
+  }
+}
+
+///
+/// Retrieve a higher z-index based on the known ones.
+///
+/// @param {String}   $key  - z-index name
+///
+/// @param {Number} $value - incrementor
+///
+/// @return {Number} - A numeric value
+///
+@function get-higher-z-index($key, $value: 1) {
+  $params: ();
+  $params: append($params, $key);
+  $params: append($params, $value);
+  $params: append($params, 'inc');
+
+  @return add-z-index($params...);
+}
+
+///
+/// Retrieve a lower z-index based on the known ones.
+///
+/// @param {String}   $key  - z-index name
+///
+/// @param {Number} $value - incrementor
+///
+/// @return {Number} - A numeric value
+///
+@function get-lower-z-index($key, $value: 1) {
+  $params: ();
+  $params: append($params, $key);
+  $params: append($params, $value);
+  $params: append($params, 'dec');
+
+  @return add-z-index($params...);
+}

@@ -1,0 +1,117 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains everything related to MEDIA QUERIES. -- ON DESKTOP FIRST
+// -----------------------------------------------------------------------------
+@import '../abstract';
+
+/// --- BREAKPOINTS 
+
+///
+/// Creates a list of global breakpoints
+///
+/// @example scss - Creates a single breakpoint with the label `phone`
+///  $breakpoints: ('phone': 320px);
+///
+$breakpoints: (
+  "watch": 240px,
+  "phone S": 320px,
+  "phone M": 375px,
+  "phone L": 425px,
+  "tablet": 768px,
+  "desktop": 1024px,
+  "desktop L": 1440px,
+  "desktop 2L": 1920px,
+  "desktop 4K": 2560px,
+  ) !default;
+
+
+///
+/// Retrieve a breakpoint.
+///
+/// @param {String}   $key  - Media query conditions
+///
+/// @return {Number} - A numeric value
+///
+@function get-breakpoint($key) {
+  @return map-get-safely($breakpoints, $key, 'error', 'is not a valid breakpoint'
+);
+}
+
+
+// Breakpoints
+@mixin onWatch {
+  @media screen and (max-width: #{get-breakpoint('watch')}) {
+    @content;
+  }
+}
+
+@mixin onPhoneS {
+  @media screen and (max-width: #{get-breakpoint('phone S')}) {
+    @content;
+  }
+}
+
+@mixin onPhoneM {
+  @media screen and (max-width: #{get-breakpoint('phone M')}) {
+    @content;
+  }
+}
+
+@mixin onPhoneL {
+  @media screen and (max-width: #{get-breakpoint('phone L')}) {
+    @content;
+  }
+}
+
+@mixin onTablet {
+  @media screen and (max-width: #{get-breakpoint('tablet')}) {
+    @content;
+  }
+}
+
+// onDesktop --- by default css is on desktop breakpoint.
+
+@mixin onDesktopL {
+  @media screen and (min-width: #{get-breakpoint('desktop')}) and (max-width: #{get-breakpoint('desktop L')}) {
+    @content;
+  }
+}
+
+@mixin onDesktop2L {
+  @media screen and (min-width: #{get-breakpoint('desktop L')}) and (max-width: #{get-breakpoint('desktop 2L')}) {
+    @content;
+  }
+}
+
+@mixin onDesktop4K {
+  @media screen and (min-width: #{get-breakpoint('desktop 2L')}) and (max-width: #{get-breakpoint('desktop 4K')}) {
+    @content;
+  }
+}
+
+@mixin onBiggerDesktop {
+  @media screen and (min-width: #{get-breakpoint('desktop 4K')}) {
+    @content;
+  }
+}
+
+@mixin onBigDesktops {
+  @media screen and (min-width: #{get-breakpoint('desktop L')}) {
+    @content;
+  }
+}
+
+
+/// COLOR SCHEME
+
+@mixin onOSDark {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+@mixin onOSLight {
+  @media (prefers-color-scheme: light) {
+    @content;
+  }
+}

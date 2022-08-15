@@ -1,0 +1,78 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass functions.
+// -----------------------------------------------------------------------------
+
+///
+/// Create a new z-index based on the known ones.
+///
+/// @param {List}   $list  - list ($key, $value, $type)
+///
+/// @return {???} - Element
+///
+@function boundedNth($list, $index) {
+  @if $index>length($list) {
+    @return nth($list, length($list));
+  }
+
+  @else if $index < 1 {
+    @return nth($list, 1);
+  }
+
+  @else {
+    @return nth($list, $index);
+  }
+
+}
+
+///
+/// Safely retrieve a value from map.
+///
+/// @param {String}   $key  - string
+///
+/// @return {Any} - value
+///
+@function map-get-safely($map, $key, $key-msg: 'warn', $msg: 'is not a valid key', $value: null) {
+
+  @if (map-has-key($map, $key)==false or not type-of($map)=='map') {
+    $full-msg: '#{$key} #{$msg}';
+
+    @if ($key-msg=='warn') {
+      @warn '#{$full-msg}';
+    }
+
+    @else if ($key-msg=='error') {
+      @error '#{$full-msg}';
+    }
+
+    @else if ($key-msg=='coerce') {
+      @if (not type-of($map)=='map') {
+        @warn 'map-get-safely::[incorrect type of $map]::#{type-of($map)}';
+      }
+
+      @warn 'map-get-safely::[method applied: coerce]::#{$full-msg}';
+      @return $value;
+    }
+
+    @else if ($key-msg=='ignore') {
+      @return $value;
+    }
+
+    @else {
+      @error 'map-get-safely::#{$key-msg} is not a valid index for messages.';
+    }
+  }
+
+  @return map-get($map, $key);
+}
+
+///
+/// Dummy function.
+///
+/// @param {Any}   $params  - any
+///
+/// @return {Any} - any
+///
+@function do-nothing($params) {
+  @return $params;
+}

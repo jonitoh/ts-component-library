@@ -1,0 +1,151 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains everything related to SHADOWS.
+// -----------------------------------------------------------------------------
+
+// TODO rgba or transparentize ?
+
+///
+/// Text shadow effect.
+///
+/// @param {String}   $key  - name
+///
+/// @param {Color}   $color  - map
+///
+@mixin text-shadow($key, $color: var(--th-color-primary)) {
+
+    @if ($key =='min') {
+        text-shadow: 1px 1px 2px $color;
+    }
+
+    @if ($key =='max') {
+        text-shadow: $color 1px 0 10px;
+    }
+}
+
+
+///
+/// Main shadow effect.
+///
+/// @param {String}   $key  - name
+///
+/// @param {Color}   $color  - map
+///
+@mixin main-shadow($key: 'all', $color: rgb(102, 93, 118), $w: 15px) {
+
+    @if ($key =='shades') {
+        // degradé de shadow pour le coté droit d'un carré
+        box-shadow: rgba($color, 0.4) 5px 5px,
+            rgba($color, 0.3) 10px 10px,
+            rgba($color, 0.2) 15px 15px,
+            rgba($color, 0.1) 20px 20px,
+            rgba($color, 0.05) 25px 25px;
+    }
+
+    @if ($key =='smooth') {
+        // smooth in the back
+        box-shadow:
+            2.8px 2.8px 2.2px rgba($color, 0.02),
+            6.7px 6.7px 5.3px rgba($color 0.028),
+            12.5px 12.5px 10px rgba($color, 0.035),
+            22.3px 22.3px 17.9px rgba($color, 0.042),
+            41.8px 41.8px 33.4px rgba($color, 0.05),
+            100px 100px 80px rgba($color, 0.07);
+    }
+
+    @if ($key=='right-small') {
+        box-shadow: 0.5px 1px 1px rgba($color, 0.7);
+    }
+
+    @if ($key=='right-medium') {
+        box-shadow: 1px 2px 2px rgba($color, 0.333),
+            2px 4px 4px rgba($color, 0.333),
+            3px 6px 6px rgba($color, 0.333);
+    }
+
+    @if ($key=='right-large') {
+        box-shadow: 1px 2px 2px rgba($color, 0.2),
+            2px 4px 4px rgba($color, 0.2),
+            4px 8px 8px rgba($color, 0.2),
+            8px 16px 16px rgba($color, 0.2),
+            16px 32px 32px rgba($color, 0.2);
+    }
+
+    // shadow size
+
+    @if ($key=='all') {
+        box-shadow: 0 0 $w $color;
+    }
+
+    @if ($key=='bottom') {
+        box-shadow: 0 $w $w (
+            -$w) $color;
+    }
+
+    @if ($key=='inset-bottom') {
+        box-shadow: inset 0 (-$w) $w (
+            -$w) $color;
+    }
+
+    @if ($key=='inset-all') {
+        box-shadow: inset 0 0 $w $color;
+    }
+
+    @if ($key=='top-bottom') {
+        box-shadow: 0 (-$w) $w (
+            -$w) $color,
+            0 $w $w (
+            -$w) $color;
+    }
+
+    @if ($key=='inset-top-bottom') {
+        box-shadow: inset 0 $w $w (
+            -$w) $color,
+            inset 0 (-$w) $w (
+            -$w) $color;
+    }
+}
+
+
+///
+/// Neon shadow effect (for dark theme?).
+///
+/// @param {String}   $key  - name
+///
+/// @param {Color}   $color  - map
+///
+@mixin neon-shadow($key: 'all', $color: rgb(102, 93, 118)) {
+
+    @if ($key =='all') {
+        box-shadow: 0px 1px 2px 0px rgba($color, 0.7),
+            1px 2px 4px 0px rgba($color, 0.7),
+            2px 4px 8px 0px rgba($color, 0.7),
+            2px 4px 16px 0px rgba($color, 0.7
+        );
+}
+}
+
+
+///
+/// Neumorphic shadow effect.
+///
+/// @param {String}   $key  - name
+///
+/// @param {Color}   $color  - map
+///
+@mixin neumorphic-shadow($key: 'default', $color1: rgb(255, 255, 255), $color2: rgb(70, 70, 70)) {
+
+    @if ($key =='default') {
+        box-shadow:
+            -10px -10px 15px rgba($color1, 0.5),
+            10px 10px 15px rgba($color2, 0.12);
+    }
+
+    @if ($key =='active') {
+        box-shadow:
+            -10px -10px 15px rgba($color1, 0.5),
+            10px 10px 15px rgba($color2, 0.12),
+            inset -10px -10px 15px rgba($color1, 0.5),
+            inset 10px 10px 15px rgba($color2, 0.12);
+    }
+}

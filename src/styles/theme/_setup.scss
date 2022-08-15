@@ -1,0 +1,248 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains all the theming done
+// -----------------------------------------------------------------------------
+@import '../base';
+@import '../abstract';
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Merriweather:ital,wght@0,400;0,700;1,300;1,400;1,700&display=swap');
+@import '../config/themes.json';
+
+// -- SIZE
+
+///
+/// Default size for theming
+///
+/// @example scss - Default size for theming
+///  $default-size: 'default';
+///
+$default-size: 'default' !default;
+
+///
+/// Default value to create a bunch of leveled CSS variables
+///
+/// @example scss - Creates a single border size with the label `default`
+///  $default-size-spread-value: 1;
+///
+$default-size-spread-value: 3 !default;
+
+///
+/// Creates a list of levels for sizes
+///
+/// @example scss - Creates a list of levels for sizes
+///  $size-keys: ('default': 1px);
+///
+$size-keys: (
+    's',
+    'default',
+    'l',
+    'xl',
+    ) !default;
+
+@mixin spread-size-themes-variables {
+
+    @each $size in $size-keys {
+        [data-theme-size='#{$size}'] {
+            @include spread-fluid-space-by-index($size, $default-size-spread-value
+        );
+        @include spread-font-size-by-index($size, $default-size-spread-value);
+    }
+}
+}
+
+@mixin default-spread-size-theme {
+    @include spread-fluid-space-by-index($default-size, $default-size-spread-value);
+    @include spread-font-size-by-index($default-size, $default-size-spread-value);
+}
+
+// -- NAME and LIGHTING
+
+///
+/// Default name for theming
+///
+/// @example scss - Default name for theming
+///  $default-name: 'default';
+///
+$default-name: $default  !default;
+
+///
+/// Default ligthing for theming
+///
+/// @example scss - Default ligthing for theming
+///  $default-ligthing: 'default';
+///
+// $default-ligthing: 'ligth' !default;
+
+///
+/// Helper mapper for mixin 'spread-one-theme'
+///
+/// @example scss - Helper mapper for mixin 'spread-one-theme'
+///  $mapper: ();
+///
+$mapper: (
+    "color-theme":("name":'th-color', "shades":( //'lightest',
+            'lighter',
+            'main',
+            'darker',
+            //'darkest',
+        ), "is-color": true),
+    "color-action": ("name":'th-color-action', "shades":('lighter',
+            'main',
+            'darker',
+        ), "is-color": true),
+    "color-social": ("name":'th-color-social', "shades":('lighter',
+            'main',
+            'darker',
+        ), "is-color":true),
+    "font": ("name":'th-font', "shades":(), 'is-color': false),
+    "color-neutral": ("name": 'th-color-neutral', "shades": ('lightest',
+            'lighter',
+            'main',
+            'darker',
+            'darkest',
+        ), 'is-color': true)) !default;
+
+@mixin spread-css-theme-variables($sub-theme) {
+
+    @each $category,
+    $map in $sub-theme {
+        $res: map-get-safely($mapper, $category, 'coerce', "has no default parameters", ()
+    );
+    $cat: map-get-safely($res, "name", 'coerce', "is not a valid key in $category-mapper['name']", $category);
+    $is-color: map-get-safely($res, "is-color", 'coerce', "is not a valid key in $category-mapper['is-color']", false);
+
+    @each $key,
+    $value in $map {
+        $var-name: --#{$cat}-#{$key};
+
+        @if ($is-color) {
+            @include define-color($var-name, $value);
+        }
+
+        @else {
+            #{$var-name}: #{$value};
+        }
+    }
+}
+
+/*
+  --gray100: hsl(208, 40%, 99%); /* Backgrounds *
+  --gray200: hsl(208, 32%, 97%); /* Backgrounds & strokes *
+  --gray300: hsl(208, 24%, 93%); /* Backgrounds & strokes *
+  --gray400: hsl(208, 22%, 86%); /* Strokes *
+  --gray500: hsl(208, 18%, 76%); /* Stroke hovers *
+  --gray600: hsl(208, 14%, 50%); /* Subtle text *
+  --gray700: hsl(208, 18%, 18%); /* Backgrounds *
+  --gray800: hsl(208, 22%, 13%); /* Backgrounds *
+  --gray900: hsl(208, 30%, 10%); /* Backgrounds & primary text *
+*/
+
+}
+
+@mixin spread-name-theme-variables-for-light-mode($name, $sub-theme) {
+
+    [data-theme-name='#{$name}'][data-theme-lighting="light"],
+    [data-theme-name='#{$name}'][data-theme-lighting="auto"] {
+        @include spread-css-theme-variables($sub-theme);
+    }
+}
+
+@mixin spread-name-theme-variables-for-dark-mode($name, $sub-theme) {
+    [data-theme-name='#{$name}'][data-theme-lighting="dark"] {
+        filter: invert(1);
+        @include spread-css-theme-variables($sub-theme);
+    }
+
+    @include onOSDark {
+        [data-theme-name='#{$name}'][data-theme-lighting="auto"] {
+            filter: invert(1);
+            @include spread-css-theme-variables($sub-theme);
+        }
+    }
+}
+
+@mixin spread-name-theme-variables-for-default-light-mode($name, $sub-theme) {
+
+    [data-theme-lighting="light"],
+    [data-theme-lighting="auto"] {
+        @include spread-css-theme-variables($sub-theme);
+    }
+}
+
+@mixin spread-name-theme-variables-for-default-dark-mode($name, $sub-theme) {
+    [data-theme-lighting="dark"] {
+        filter: invert(1);
+        @include spread-css-theme-variables($sub-theme);
+    }
+
+    @include onOSDark {
+        [data-theme-lighting="auto"] {
+            filter: invert(1);
+            @include spread-css-theme-variables($sub-theme);
+        }
+    }
+}
+
+@mixin spread-name-and-lighting-themes-variables {
+
+    @each $name,
+    $theme in $themes {
+        @debug type-of($theme);
+        $modes: map-get($theme, "mode"
+        );
+
+        @each $mode,
+        $sub-theme in $modes {
+            @if ($mode =="light") {
+                @include spread-name-theme-variables-for-light-mode($name, $sub-theme);
+
+                @if ($name ==$default-name) {
+                    @include spread-name-theme-variables-for-default-light-mode($name, $sub-theme);
+                }
+            }
+
+            @else if ($mode =="dark") {
+                @include spread-name-theme-variables-for-dark-mode($name, $sub-theme);
+
+                @if ($name ==$default-name) {
+                    @include spread-name-theme-variables-for-default-dark-mode($name, $sub-theme);
+                }
+            }
+
+            @else {
+                @warn "unknown mode: #{$mode}";
+            }
+        }
+    }
+}
+
+
+@mixin spread-one-lighting-theme-css-variable($name, $light-value, $dark-value) {
+
+    [data-theme-lighting="light"],
+    [data-theme-lighting="auto"] {
+        #{$name}: #{$light-value};
+    }
+
+    [data-theme-lighting="dark"] {
+        #{$name}: #{$dark-value};
+    }
+
+    @include onOSDark {
+        [data-theme-lighting="auto"] {
+            #{$name}: #{$dark-value};
+        }
+    }
+}
+
+// -- SETUP
+@mixin load-themes {
+    // SIZE
+    @include spread-size-themes-variables;
+
+    // NAME and LIGHTING
+    @include spread-name-and-lighting-themes-variables;
+    @include spread-one-lighting-theme-css-variable('--th-lighting-mode', 'light', 'dark');
+
+}
+
+@include load-themes;

@@ -1,0 +1,168 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains everything related to COLORS.
+// -----------------------------------------------------------------------------
+@import '../abstract';
+
+/// --- BASIC COLORS
+
+///
+/// Creates a list hues for basic colors
+///
+/// @example scss - Creates a single color with the label `phone`
+///  $colors: ('red': hsl(0, 100%, 50%));
+///
+$colors: (
+  'red': hsl(0, 100%, 50%),
+  'orange': hsl(39, 100%, 50%),
+  'yellow': hsl(60, 100%, 50%),
+  'green': hsl(120, 100%, 25%),
+  'cyan': hsl(180, 100%, 50%),
+  'grey': hsl(0, 0%, 50%),
+  'indigo': hsl(275, 100%, 25%),
+  'blue': hsl(240, 100%, 50%),
+  'purple': hsl(300, 100%, 25%),
+  'magenta': hsl(300, 100%, 50%),
+  'pink': hsl(350, 100%, 88%),
+  ) !default;
+
+///
+/// Creates a list of global shades
+///
+/// @example scss - Creates a single shade with the label `main`
+///  $shades: ('main': 0);
+///
+$shades: (
+  'white': 100%,
+  'lightest': 40%,
+  'lighter': 20%,
+  'main': 0%,
+  'darker': -20%,
+  'darkest': -40%,
+  'black': -100%,
+  ) !default;
+
+///
+/// Retrieve a basic color.
+///
+/// @param {Color}   $color  - hsl color
+///
+/// @param {Number}   $rate - rate between -1 and 1
+///
+/// @return {Color} - A hsl color
+///
+@function get-variant-color($color, $rate) {
+  @if ($rate==100%) {
+    @return hsl(0, 0%, 100%
+  );
+}
+
+@else if ($rate==-100%) {
+  @return hsl(0, 0%, 0%);
+}
+
+@else if ($rate==0) {
+  @return $color;
+}
+
+@else if ($rate > 0) {
+  @return lighten($color, $rate);
+}
+
+@else {
+  @return darken($color, -$rate);
+}
+}
+
+///
+/// Retrieve a color.
+///
+/// @param {String}   $name  - name of the color
+///
+/// @param {String}   $shade  - shade of the color
+///
+/// @return {Color} - A hsl color
+///
+@function get-color($color, $shade: 'main') {
+  $color: map-get-safely($colors, $color, 'ignore', 'is not a valid key in the map $colors', $color);
+
+  $rate: map-get-safely($shades, $shade, 'error', 'is not a valid key in the map $shades');
+
+  @return get-variant-color($color, $rate);
+}
+
+///
+/// Create a linear gradient.
+///
+/// @param {Color}   $start-color  - color
+///
+/// @param {Color}   $end-color  - color
+///
+/// @return {Color} - A linear gradient
+///
+@function get-gradient-little($start-color, $end-color) {
+  @return linear-gradient($start-color, 10%, $end-color);
+}
+
+///
+/// Create a linear gradient.
+///
+/// @param {Color}   $color  - color
+///
+/// @return {Color} - A linear gradient
+///
+@function get-gradient-transparent($color) {
+  @return linear-gradient(to right, transparent, $color);
+}
+
+$default-options: (
+  'h': 0deg,
+  's': 0%,
+  'l': 0%,
+  'a': 0,
+  's_a': 0) !default;
+
+///
+/// Retrieve a possible shade of a semantic color.
+///
+/// @param {String}   $name  - name of the color
+///
+/// @param {String}   $shade  - shade of the color
+///
+/// @return {Color} - A hsl color
+///
+@function semantic-color($name, $shade: 'main', $options: $default-options) {
+
+  $rate: map-get-safely($shades, $shade, 'error', 'is not a valid key in the map $shades'
+);
+$h: map-get-safely($options, 'h', 'ignore', 'is not a valid key in the map $options', 0deg);
+$s: map-get-safely($options, 's', 'ignore', 'is not a valid key in the map $options', 0%);
+$l: map-get-safely($options, 'l', 'ignore', 'is not a valid key in the map $options', 0%);
+$a: map-get-safely($options, 'a', 'ignore', 'is not a valid key in the map $options', 0);
+$s_a: map-get-safely($options, 's_a', 'ignore', 'is not a valid key in the map $options', 0);
+
+@if ($rate==100%) {
+  @return hsl(0, 0%, 100%);
+}
+
+@else if ($rate==-100%) {
+  @return hsl(0, 0%, 0%);
+}
+
+@else {
+
+  @return hsla(calc(var(#{$name}-h) + #{$h}),
+    calc(var(#{$name}-s) + #{$s}),
+    calc(var(#{$name}-l) + #{$l + $rate}),
+    if($s_a==0, calc(var(#{$name}-a) + #{$a}), #{$s_a}),
+  );
+}
+
+}
+
+@mixin define-color($name, $color) {
+  #{$name}-h: #{hue($color)};
+  #{$name}-l: #{lightness($color)};
+  #{$name}-s: #{saturation($color)};
+  #{$name}-a: #{alpha($color)};
+}

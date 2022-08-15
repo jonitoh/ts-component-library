@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+// -----------------------------------------------------------------------------
+// This file contains CSS for HTML FORM ( AND INPUT ) Tags.
+// -----------------------------------------------------------------------------
+@import '../base';
+
+/* INPUT */
+input {
+    padding: var(--space-minus-2);
+
+    border: get-border-variables('size', 's') solid semantic-color("--th-color-neutral", "lighter");
+    border-radius: get-border-variables('radius', 'l');
+
+    outline: get-border-variables('size', 's') solid semantic-color("--th-color-primary");
+
+    transition: outline 0.3s ease;
+
+    font-family: var(--th-font-action);
+
+    &:focus {
+        outline: get-border-variables('size', 'default') solid semantic-color("--th-color-secondary");
+        /* background-color: semantic-color("--th-color-highlight"); */
+    }
+}
+
+/* TEXTAREA */
+textarea {
+    padding: var(--space-minus-2);
+
+    border: get-border-variables('size', 's') solid semantic-color("--th-color-neutral", "lighter");
+    border-radius: get-border-variables('radius', 's');
+
+    outline: get-border-variables('size', 's') solid semantic-color("--th-color-primary");
+
+    font-family: var(--th-font-action);
+
+    &:focus {
+        outline: get-border-variables('size', 'default') solid semantic-color("--th-color-secondary");
+    }
+}
+
+/* BUTTONS */
+/* cf. https://ishadeed.com/article/styling-the-good-old-button/ */
+/*
+$buttons: (
+  'button, 
+    .button, 
+    a.button, 
+    [type=submit],
+    [type=button]'
+);
+*/

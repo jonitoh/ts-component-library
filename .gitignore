@@ -1,5 +1,13 @@
 .DS_Store
 
 node_modules
+package-lock.json
 
 lib
+
+dump
+
+bundle-analysis.html
+
+
+.env

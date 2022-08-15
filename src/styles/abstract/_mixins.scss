@@ -1,0 +1,24 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+@import 'functions';
+
+///
+/// Generate CSS variables.
+///
+/// @param {String}   $prefix  - name
+///
+/// @param {Map}   $map  - map
+///
+@mixin generate-css-variables($prefix, $prefix-func: 'do-nothing', $map: (), $prefix-value: 'do-nothing') {
+
+  @each $key,
+  $value in $map {
+    $new-prefix: call(get-function($prefix-func),
+      $prefix);
+    $new-value: call(get-function($prefix-value),
+      $value);
+    --#{$new-prefix}-#{$key}: #{$new-value};
+  }
+}

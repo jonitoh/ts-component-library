@@ -1,0 +1,64 @@
+@charset "UTF-8";
+// -----------------------------------------------------------------------------
+// This file contains everything related to BORDERS.
+// -----------------------------------------------------------------------------
+@import '../abstract';
+
+/// --- BORDER SIZE
+
+///
+/// Creates a list of global border sizes
+///
+/// @example scss - Creates a single border size with the label `default`
+///  $border-sizes: ('default': 1px);
+///
+$border-sizes: (
+    's': 1px,
+    'default': 3px,
+    'l': 5px,
+    'xl': 8px,
+    '2xl': 10px,
+    ) !default;
+
+
+/// --- BORDER RADIUS
+
+///
+/// Creates a list of global border radii
+///
+/// @example scss - Creates a single border radius with the label `default`
+///  $border-radii: ('default': 1px);
+///
+$border-radii: (
+    'default': 1px,
+    's': 3px,
+    'l': 5px,
+    'xl': .5rem,
+    '2xl': 1rem,
+    '3xl': 2rem,
+    'round': 50%,
+    'pill': 500px,
+    ) !default;
+
+/*
+@mixin spread-border-variables {
+    @include generate-css-variables('border-size', $border-sizes
+);
+@include generate-css-variables('radius', $border-radii);
+}
+*/
+
+@function get-border-variables($map-name, $key) {
+    @if ($map-name=='size') {
+        @return map-get-safely($border-sizes, $key, 'error', 'is not a valid key in the border-size map.'
+    );
+}
+
+@else if ($map-name=='radius') {
+    @return map-get-safely($border-radii, $key, 'error', 'is not a valid key in the border-radius map');
+}
+
+@else {
+    @error 'get-border-variables::#{$map-name} is not a valid map.';
+}
+}

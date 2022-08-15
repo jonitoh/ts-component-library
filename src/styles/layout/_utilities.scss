@@ -1,0 +1,303 @@
+@charset "UTF-8";
+
+// -----------------------------------------------------------------------------
+// This file contains CSS for HTML UTILITIES Tags.
+// -----------------------------------------------------------------------------
+@import '../base';
+// @import '../theme/setup';
+
+//** PSEUDO CLASSES **//
+
+/* focus-visible
+:focus-visible {
+    outline: get-border-variables('size', 'default') solid black;
+}*/
+
+/* scrollbar *
+::-webkit-scrollbar {
+    width: auto;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--th-color-scrollbar);
+    margin-block: 0.25rem;
+    border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 0.2vw solid var(--th-color-scrollbar);
+    border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+    border-color: var(--th-color-hover);
+    background-color: var(--th-color-hover);
+}
+
+/* for Firefox: <thumb> <track> *
+html {
+    scrollbar-width: auto;
+    scrollbar-color: var(--th-color-scrollbar) transparent;
+}
+*/
+
+//** CLASSES OR IDS **//
+
+/* root of the app */
+#root {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+/* containers */
+@mixin container($size: 'default', $border-color: semantic-color("--th-color-border"), $show-outline: true) {
+    @if ($size =='default') {
+        margin: var(--space-minus-1) var(--space-0);
+        border-radius: get-border-variables('radius', 'l');
+    }
+
+    @if ($size =='full') {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    @if ($show-outline) {
+        border: get-border-variables('size', 's') solid $border-color;
+    }
+
+}
+
+/* holy grail page */
+.page {
+    min-height: 100vh;
+    min-width: 100vw;
+
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+
+    &__header {
+        background-color: transparent;
+        padding-bottom: var(--space-0);
+        @include container('default', semantic-color("--th-color-border"), false);
+        margin-block: 0;
+    }
+
+    &__main {
+        background-color: #{semantic-color("--th-color-background")};
+
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: row;
+
+        @include container('default', semantic-color("--th-color-border"));
+    }
+
+    &__main__content {
+        flex: 1 1 auto;
+
+        padding: var(--space-0);
+    }
+
+    &__main__sidebar {
+        padding: var(--space-0);
+
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 33%;
+
+    }
+
+    &__main__sidebar--left {
+        order: -1;
+    }
+
+    /*
+    &__footer {
+        background: transparent;
+        padding-top: var(--space-0);
+    }*/
+
+}
+
+@include onTablet {
+    .page {
+
+        &__main {
+            flex-direction: column;
+        }
+
+
+        &__main__sidebar {
+            flex-basis: auto;
+        }
+
+        &__main__sidebar--left {
+            order: 0;
+        }
+
+    }
+}
+
+/* disable an element */
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* utility class to hide elements quickly */
+.hide {
+    display: none;
+}
+
+/* look scroll */
+.scroll-lock {
+    overflow: hidden;
+}
+
+/* sr-only: hidden visually but accessible to screen readers */
+@mixin screen-reader-only {
+    border: 0;
+
+    clip: rect(0 0 0 0);
+    -webkit-clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+    clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+}
+
+.sr-only {
+    @include screen-reader-only;
+}
+
+/**
+  * GLASS-LIKE ASPECT: cf. https://blog.logrocket.com/implement-glassmorphism-css/ 
+*/
+$glass-opacity: 0.25;
+
+@mixin glass-effect-from-semantic-color($name, $mode, $show-outline: true) {
+    @if ($mode =='simple') {
+        // cf. https://hype4.academy/tools/glassmorphism-generator
+        background: semantic-color($name, 'main', ('s_a': .15));
+        box-shadow: 0 2px 8px 0 semantic-color('--th-color-shadow', 'main', ('s_a': 0.37));
+        backdrop-filter: blur(6.5px) saturate(60%);
+
+        @if ($show-outline) {
+            border: 1px solid semantic-color($name, 'lighter', ('s_a': 0.18));
+        }
+    }
+
+    @else {
+        // cf. cf. https://blog.logrocket.com/implement-glassmorphism-css/
+        background: linear-gradient(120deg,
+                semantic-color($name, 'main', ('s_a':$glass-opacity)),
+                semantic-color($name, 'main', ('s_a':3 * $glass-opacity)), 70%,
+                semantic-color($name, 'main', ('s_a':$glass-opacity)));
+        box-shadow:
+            inset 4px 4px 5px 0 semantic-color('--th-color-shadow', 'main', ('s_a':$glass-opacity)),
+            inset -4px -4px 5px 0 semantic-color('--th-color-shadow', 'lighter', ('s_a':0.125)),
+            0 0 10px 1px semantic-color($name, 'lighter', ('s_a': $glass-opacity));
+        backdrop-filter:
+            blur(15px) saturate(60%);
+
+        @if ($show-outline) {
+            border: 1px solid semantic-color($name, 'lighter');
+        }
+    }
+}
+
+/**
+    * POSITIONS IN THE PAGE
+*/
+.position {
+    position: absolute;
+
+    &--top-left {
+        top: 0;
+        left: 0;
+    }
+
+    &--top-center {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &--top-right {
+        top: 0;
+        right: 0;
+    }
+
+    &--center-left {
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+    }
+
+    &--center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &--center-right {
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+    }
+
+    &--bottom-left {
+        bottom: 0;
+        left: 0;
+    }
+
+    &--bottom-center {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &--bottom-right {
+        bottom: 0;
+        right: 0;
+    }
+}
+
+/* CARD ANIMATION */
+/* From uiverse.io by @SharpTH */
+.animation__shadow--left-to-right {
+    --animation__shadow--left-to-right--color: hsla(240, 100%, 50%, 0.2);
+    transition: all .2s;
+    box-shadow: 12px 12px 2px 1px var(--animation__shadow--left-to-right--color);
+
+    &:hover {
+        box-shadow: -12px 12px 2px -1px var(--animation__shadow--left-to-right--color);
+    }
+}
+
+/* 
+.success {
+    background-color: #83bd92;
+}
+
+.warning {
+    background-color: #bda883;
+}
+
+.error {
+    background-color: #bd8383;
+}
+
+.info {
+    background-color: #8398bd;
+}
+*/
