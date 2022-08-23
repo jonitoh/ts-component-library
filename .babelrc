@@ -10,5 +10,7 @@
     ],
     "@babel/preset-react",
     "@babel/preset-typescript"
-  ]
+  ],
+  "exclude": ["**/node_modules/**"],
+  "extensions": [".js", ".jsx", ".ts", ".tsx", ".scss", ".json"]
 }

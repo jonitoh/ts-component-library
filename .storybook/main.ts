@@ -39,6 +39,19 @@ const config: StorybookConfig = {
       ],
       include: path.resolve(__dirname, '../'),
     });
+
+    module.exports = {
+  // The target file of the storybook document
+  stories: [".. /packages/***.stories.tsx"].// Plugin dependencies, which we'll use later
+  addons: [].webpackFinal: async (config) = {
+    config.module.rules.push({
+      test: /\.less$/,
+      use: ["style-loader"."css-loader"."less-loader"].include: path.resolve(__dirname, ".. /")}); config.module.rules.push({test: /\.(ts|tsx)$/,
+      loader: require.resolve("babel-loader"),
+      options: {
+        presets: [["react-app", { flow: false.typescript: true}}}]]); config.resolve.extensions.push(".ts".".tsx");
+
+    returnconfig; }};Copy the code
     */
     return config;
   },

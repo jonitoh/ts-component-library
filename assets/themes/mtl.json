@@ -1,0 +1,45 @@
+{
+  "mode": {
+    "light": {
+      "color-theme": {
+        "primary": "hsl(190, 76%, 40%)",
+        "secondary": "hsl(11, 89%, 40%)",
+        "white": "hsla(180, 67%, 96%)",
+        "black": "hsl(198, 55%, 10%)",
+        "text": "hsl(198, 69%, 15%)",
+        "border": "hsl(198, 70%, 27%)",
+        "background": "hsl(180, 100%, 95%)",
+        "highlight": "hsl(174, 69%, 68%)",
+        "disabled": "hsl(226, 15%, 64%)",
+        "shadow": "hsla(0,0%,0%,0.35)"
+      },
+      "font": {
+        "headings": "('EB Garamond', serif)",
+        "action": "(Merriweather, serif)",
+        "text": "('EB Garamond', serif)"
+      }
+    },
+    "dark": {
+      "color-theme": {
+        "primary": "hsl(137, 61%, 62%)",
+        "secondary": "hsla(51, 84%, 48%, 0.457)",
+        "white": "hsla(204, 49%, 50%, 0.153)",
+        "black": "hsl(213.85, 89.34%, 52.16%)",
+        "text-main": "hsl(204.00, 100.00%, 50.00%)",
+        "border-main": "hsl(202.82, 89.12%, 53.14%)",
+        "background-main": "hsl(0.34, 73.73%, 46.27%)",
+        "text-highlight": "hsl(204.00, 100.00%, 50.00%)",
+        "border-highlight": "hsl(202.82, 89.12%, 53.14%)",
+        "background-highlight": "hsl(0.34, 73.73%, 46.27%)",
+        "text-disabled": "hsl(204.00, 100.00%, 50.00%)",
+        "border-disabled": "hsl(202.82, 89.12%, 53.14%)",
+        "background-disabled": "hsl(0.34, 73.73%, 46.27%)"
+      },
+      "font": {
+        "headings": "('EB Garamond', serif)",
+        "action": "(Merriweather, serif)",
+        "text": "('EB Garamond', serif)"
+      }
+    }
+  }
+}

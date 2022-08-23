@@ -5,6 +5,7 @@
     "outDir": "lib",
     "lib": ["dom", "dom.iterable", "esnext"],
     "declaration": true,
+    "declarationDir": "lib/types",
     "emitDeclarationOnly": true,
     "allowJs": true,
     "skipLibCheck": true,

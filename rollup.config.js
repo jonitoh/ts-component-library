@@ -11,6 +11,7 @@ import license from "rollup-plugin-license";
 import dts from "rollup-plugin-dts";
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
+import json from "@rollup/plugin-json";
 // import { eslint } from 'rollup-plugin-eslint';
 // import stylelint from 'rollup-plugin-stylelint';
 // import sassLint from 'rollup-plugin-sass-lint';
@@ -63,9 +64,9 @@ export default [
         // useful in watch mode
         copyOnce: isDev,
       }),
-      external(),
+      external({ includeDependencies: isDev }),
       resolve(),
-      commonjs(),
+      commonjs({ sourceMap: isDev }),
       /*
         stylelint({
     fix: false,
@@ -85,10 +86,10 @@ export default [
           outDir: "lib/esm",
         },
       }), // { useTsconfigDeclarationDir: true }
-      alias({
+      /*alias({
         resolve: extensions.concat([".json"]),
         entries: [{ find: "src", replacement: "./src" }],
-      }),
+      }),*/
       styles({
         inject: false,
         autoModules: true,
@@ -101,6 +102,7 @@ export default [
           plugins: [autoprefixer, !isDev ? cssnano() : undefined],
         },
       }),
+      json(),
       !isDev && terser(),
       // isDev &&
       //   livereload({
